@@ -54,10 +54,10 @@ const Signup: React.FC<SignupProps> = () => {
 
 	return (
 		<form className='space-y-6 px-6 pb-4' onSubmit={handleRegister}>
-			<h3 className='text-xl font-medium text-white'>Register to LeetClone</h3>
+			<h3 className='text-xl font-medium text-white text-right'>CodeHubהרשמה ל </h3>
 			<div>
-				<label htmlFor='email' className='text-sm font-medium block mb-2 text-gray-300'>
-					Email
+				<label htmlFor='email' className='text-sm font-medium block mb-2 text-gray-300 text-right'>
+					אימייל
 				</label>
 				<input
 					onChange={handleChangeInput}
@@ -72,8 +72,8 @@ const Signup: React.FC<SignupProps> = () => {
 				/>
 			</div>
 			<div>
-				<label htmlFor='displayName' className='text-sm font-medium block mb-2 text-gray-300'>
-					Display Name
+				<label htmlFor='displayName' className='text-sm font-medium block mb-2 text-gray-300 text-right'>
+					שם משתמש
 				</label>
 				<input
 					onChange={handleChangeInput}
@@ -88,8 +88,8 @@ const Signup: React.FC<SignupProps> = () => {
 				/>
 			</div>
 			<div>
-				<label htmlFor='password' className='text-sm font-medium block mb-2 text-gray-300'>
-					Password
+				<label htmlFor='password' className='text-sm font-medium block mb-2 text-gray-300 text-right'>
+					סיסמה
 				</label>
 				<input
 					onChange={handleChangeInput}
@@ -110,13 +110,13 @@ const Signup: React.FC<SignupProps> = () => {
             text-sm px-5 py-2.5 text-center bg-brand-orange hover:bg-brand-orange-s
         '
 			>
-				{loading ? "Registering..." : "Register"}
+				{loading ? "נרשם..." : "הירשם"}
 			</button>
 
 			<div className='text-sm font-medium text-gray-300'>
-				Already have an account?{" "}
-				<a href='#' className='text-blue-700 hover:underline' onClick={handleClick}>
-					Log In
+				יש לך כבר משתמש?{" "}
+				<a href='#' className='text-sky-600 hover:underline' onClick={handleClick}>
+					לחץ כאן להתחבר
 				</a>
 			</div>
 		</form>

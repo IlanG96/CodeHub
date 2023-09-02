@@ -1,16 +1,26 @@
 import ProblemsTable from "@/components/ProblemsTable/ProblemsTable";
 import Topbar from "@/components/Topbar/Topbar";
 import useHasMounted from "@/hooks/useHasMounted";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, firestore } from "@/firebase/firebase";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+
+
+async function getdisplayName(id: string) {
+	const docRef = doc(firestore, "users", id);
+	const docSnap = await getDoc(docRef);
+	const displayName = docSnap.get("displayName");
+	return displayName;
+}
+
 
 export default function Home() {
 	const [loadingProblems, setLoadingProblems] = useState(true);
 	const hasMounted = useHasMounted();
 	const [user] = useAuthState(auth);
+	const [displayName, setdisplayName] = useState("");
 	const [newProblem, setNewProblem] = useState({
 		id: "",
 		title: "",
@@ -22,6 +32,19 @@ export default function Home() {
 		likes: 0,
 		dislikes: 0,
 	});
+
+
+	useEffect(() => {
+		// Fetch and set the display name when the user changes
+		const fetchDisplayName = async () => {
+		  if (user) {
+			const displayName = await getdisplayName(user.uid);
+			setdisplayName(displayName);
+		  }
+		};
+	
+		fetchDisplayName();
+	  }, [user]);
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setNewProblem({
@@ -42,6 +65,11 @@ export default function Home() {
 
 	if (!hasMounted) return null;
 
+	//סידור טקסט אם המשתמש רשם את השם שלו באנגלית אז צריך שזה יוצג שונה
+	function isHebrew(name : string) {
+		const hebrewRegex = /[\u0590-\u05FF]/;
+		return hebrewRegex.test(name);
+	}
 	return (
 		<>
 			<main className='bg-dark-layer-2 min-h-screen'>
@@ -51,7 +79,13 @@ export default function Home() {
 					className='text-2xl text-center text-gray-700 dark:text-gray-400 font-medium
 					uppercase mt-10 mb-5'
 					>
-						👇 תהנה ממגוון הבעיות שיש לנו להציע  {user.email} שלום
+						
+			    		{isHebrew(displayName) ? (
+      						<>👇 שלום {displayName} תהנה ממגוון הבעיות שיש לנו להציע</>
+    					) : (
+     						 <>👇 תהנה ממגוון הבעיות שיש לנו להציע  {displayName} שלום</>
+    					)}			
+						
 					</h1>
 				) : (
 
@@ -75,20 +109,20 @@ export default function Home() {
 							<thead className='text-xs text-gray-700 uppercase dark:text-gray-400 border-b '>
 								<tr>
 									<th scope='col' className='px-1 py-3 w-0 font-medium'>
-										Status
+										סטטוס
 									</th>
 									<th scope='col' className='px-6 py-3 w-0 font-medium'>
-										Title
+										שם הבעיה
 									</th>
 									<th scope='col' className='px-6 py-3 w-0 font-medium'>
-										Difficulty
+										רמת קושי
 									</th>
 
 									<th scope='col' className='px-6 py-3 w-0 font-medium'>
-										Category
+										קטגוריה
 									</th>
 									<th scope='col' className='px-6 py-3 w-0 font-medium'>
-										Solution
+										פתרון
 									</th>
 								</tr>
 							</thead>

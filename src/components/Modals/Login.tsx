@@ -36,10 +36,10 @@ const Login: React.FC<LoginProps> = () => {
 	}, [error]);
 	return (
 		<form className='space-y-6 px-6 pb-4' onSubmit={handleLogin}>
-			<h3 className='text-xl font-medium text-white'>Sign in to LeetClone</h3>
+			<h3 className='text-xl font-medium text-white text-right'>CodeHubהתחברות ל</h3>
 			<div>
-				<label htmlFor='email' className='text-sm font-medium block mb-2 text-gray-300'>
-					Your Email
+				<label htmlFor='email' className='text-sm font-medium block mb-2 text-gray-300 text-right'>
+					האימייל שלך
 				</label>
 				<input
 					onChange={handleInputChange}
@@ -54,8 +54,8 @@ const Login: React.FC<LoginProps> = () => {
 				/>
 			</div>
 			<div>
-				<label htmlFor='password' className='text-sm font-medium block mb-2 text-gray-300'>
-					Your Password
+				<label htmlFor='password' className='text-sm font-medium block mb-2 text-gray-300 text-right'>
+					סיסמה
 				</label>
 				<input
 					onChange={handleInputChange}
@@ -76,17 +76,17 @@ const Login: React.FC<LoginProps> = () => {
                 text-sm px-5 py-2.5 text-center bg-brand-orange hover:bg-brand-orange-s
             '
 			>
-				{loading ? "Loading..." : "Log In"}
+				{loading ? "טוען....." : "התחבר"}
 			</button>
 			<button className='flex w-full justify-end' onClick={() => handleClick("forgotPassword")}>
 				<a href='#' className='text-sm block text-brand-orange hover:underline w-full text-right'>
-					Forgot Password?
+					שכחת סיסמה?
 				</a>
 			</button>
 			<div className='text-sm font-medium text-gray-300'>
-				Not Registered?{" "}
-				<a href='#' className='text-blue-700 hover:underline' onClick={() => handleClick("register")}>
-					Create account
+				לא רשום?{" "}
+				<a href='#' className='text-sky-600 hover:underline' onClick={() => handleClick("register")}>
+					לחץ כאן להרשמה
 				</a>
 			</div>
 		</form>

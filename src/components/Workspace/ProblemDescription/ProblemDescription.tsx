@@ -281,9 +281,9 @@ function useGetCurrentProblem(problemId: string) {
 				setCurrentProblem({ id: docSnap.id, ...problem } as DBProblem);
 				// easy, medium, hard
 				setProblemDifficultyClass(
-					problem.difficulty === "Easy"
+					problem.difficulty === "קל"
 						? "bg-olive text-olive"
-						: problem.difficulty === "Medium"
+						: problem.difficulty === "בינוני"
 						? "bg-dark-yellow text-dark-yellow"
 						: " bg-dark-pink text-dark-pink"
 				);
