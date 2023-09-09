@@ -1,10 +1,11 @@
 import ProblemsTable from "@/components/ProblemsTable/ProblemsTable";
 import Topbar from "@/components/Topbar/Topbar";
 import useHasMounted from "@/hooks/useHasMounted";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, firestore } from "@/firebase/firebase";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import FavoriteTable from "@/components/ProblemsTable/FavoriteTable";
 
 
 async function getdisplayName(id: string) {
@@ -21,6 +22,8 @@ export default function Home() {
 	const [user] = useAuthState(auth);
 	const [displayName, setdisplayName] = useState("");
 
+
+
 	useEffect(() => {
 		// Fetch and set the display name when the user changes
 		const fetchDisplayName = async () => {
@@ -32,7 +35,6 @@ export default function Home() {
 	
 		fetchDisplayName();
 	  }, [user]);
-
 
 	if (!hasMounted) return null;
 
@@ -52,9 +54,9 @@ export default function Home() {
 					>
 						
 			    		{isHebrew(displayName) ? (
-      						<>👇 שלום {displayName} תהנה ממגוון הבעיות שיש לנו להציע</>
+      						<>👇 שלום {displayName} להלן הבעיות המועדפות עליך וסטטיסטיקות בנוגע למספר הבעיות שפתרת </>
     					) : (
-     						 <>👇 תהנה ממגוון הבעיות שיש לנו להציע  {displayName} שלום</>
+     						 <>👇 להלן הבעיות המועדפות עליך וסטטיסטיקות בנוגע למספר הבעיות שפתרת {displayName} שלום</>
     					)}			
 						
 					</h1>
@@ -98,9 +100,10 @@ export default function Home() {
 								</tr>
 							</thead>
 						)}
-						<ProblemsTable setLoadingProblems={setLoadingProblems} />
+						<FavoriteTable setLoadingProblems={setLoadingProblems} />
 					</table>
 				</div>
+
 			</main>
 		</>
 	);

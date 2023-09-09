@@ -1,6 +1,6 @@
-import { auth } from "@/firebase/firebase";
+import { auth, firestore } from "@/firebase/firebase";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Logout from "../Buttons/Logout";
 import { useSetRecoilState } from "recoil";
@@ -12,6 +12,7 @@ import Timer from "../Timer/Timer";
 import { useRouter } from "next/router";
 import { problems } from "@/utils/problems";
 import { Problem } from "@/utils/types/problem";
+import { doc, getDoc } from "firebase/firestore";
 
 type TopbarProps = {
 	problemPage?: boolean;
@@ -20,14 +21,25 @@ type TopbarProps = {
 const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 	const [user] = useAuthState(auth);
 	const setAuthModalState = useSetRecoilState(authModalState);
+	const [isAdmin, setIsAdmin] = useState(false);
 	const router = useRouter();
+
+  
+	//function to check if the user is admin or not
+	const CheckisAdmin = async () => {
+		if (user) {
+			const docRef = doc(firestore, "users", user.uid);
+			const docSnap = await getDoc(docRef);
+			const isAdmin = docSnap.get("Admin");
+			return isAdmin;
+		}
+	};
 
 	const handleProblemChange = (isForward: boolean) => {
 		const { order } = problems[router.query.pid as string] as Problem;
 		const direction = isForward ? 1 : -1;
 		const nextProblemOrder = order + direction;
 		const nextProblemKey = Object.keys(problems).find((key) => problems[key].order === nextProblemOrder);
-
 		if (isForward && !nextProblemKey) {
 			const firstProblemKey = Object.keys(problems).find((key) => problems[key].order === 1);
 			router.push(`/problems/${firstProblemKey}`);
@@ -40,7 +52,20 @@ const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 			router.push(`/problems/${nextProblemKey}`);
 		}
 	};
+	
+	useEffect(() => {
+		const fetchIsAdmin = async () => {
+		  if (user) {
+			const isAdmin = await CheckisAdmin();
+			setIsAdmin(isAdmin);
+		  }
+		};
+		
+		fetchIsAdmin();
+	  }, [user]);
+	  
 
+ 
 	return (
 		<nav className='relative flex h-[50px] w-full shrink-0 items-center px-5 bg-dark-layer-1 text-dark-gray-7'>
 			<div className={`flex w-full items-center justify-between ${!problemPage ? "max-w-[1200px] mx-auto" : ""}`}>
@@ -75,16 +100,28 @@ const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 				)}
 
 				<div className='flex items-center space-x-4 flex-1 justify-end'>
-					<div>
-						<a
-							href=''
-							target='_blank'
-							rel='noreferrer'
-							className='bg-dark-fill-3 py-1.5 px-3 cursor-pointer rounded text-brand-orange hover:bg-dark-fill-2'
-						>
-							Premium
-						</a>
-					</div>
+					{user &&
+						<div>
+							<a
+								href='/users'
+								rel='noreferrer'
+								className='bg-dark-fill-3 py-1.5 px-3 cursor-pointer rounded text-brand-orange hover:bg-dark-fill-2'
+							>
+								מועדפים
+							</a>
+						</div>
+					}
+					{user && isAdmin &&
+						<div>
+							<a
+								href='/AddProblems'
+								rel='noreferrer'
+								className='bg-dark-fill-3 py-1.5 px-3 cursor-pointer rounded text-brand-orange hover:bg-dark-fill-2'
+							>
+								הוספת בעיות
+							</a>
+						</div>
+					}					
 					{!user && (
 						<Link
 							href='/auth'
@@ -110,6 +147,7 @@ const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 				</div>
 			</div>
 		</nav>
+		
 	);
 };
 export default Topbar;
