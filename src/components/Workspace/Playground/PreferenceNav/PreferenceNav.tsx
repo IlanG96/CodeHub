@@ -6,10 +6,14 @@ import SettingsModal from "@/components/Modals/SettingsModal";
 type PreferenceNavProps = {
 	settings: ISettings;
 	setSettings: React.Dispatch<React.SetStateAction<ISettings>>;
+	selectedLanguage: string;
+	handleLanguageChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+
 };
 
-const PreferenceNav: React.FC<PreferenceNavProps> = ({ setSettings, settings }) => {
+const PreferenceNav: React.FC<PreferenceNavProps> = ({ setSettings, settings,selectedLanguage,handleLanguageChange }) => {
 	const [isFullScreen, setIsFullScreen] = useState(false);
+
 
 	const handleFullScreen = () => {
 		if (isFullScreen) {
@@ -39,13 +43,22 @@ const PreferenceNav: React.FC<PreferenceNavProps> = ({ setSettings, settings }) 
 
 	return (
 		<div className='flex items-center justify-between bg-dark-layer-2 h-11 w-full '>
-			<div className='flex items-center text-white'>
-				<button className='flex cursor-pointer items-center rounded focus:outline-none bg-dark-fill-3 text-dark-label-2 hover:bg-dark-fill-2  px-2 py-1.5 font-medium'>
-					<div className='flex items-center px-1'>
-						<div className='text-xs text-label-2 dark:text-dark-label-2'>JavaScript</div>
-					</div>
-				</button>
+		<div className='flex items-center text-xs text-label-2 dark:text-dark-label-2'>
+		  <div className='relative'>
+			<select
+			  className='cursor-pointer rounded bg-dark-fill-3 text-dark-label-2 hover:bg-dark-fill-2 p-1.5 pr-6 font-medium ml-1 dark:bg-dark-fill-3 dark:focus:bg-dark-layer-1'
+			  value={selectedLanguage}
+			  onChange={handleLanguageChange}
+			>
+			  <option value='javascript'>JavaScript</option>
+			  <option value='java'>Java</option>
+			  <option value='python'>Python</option>
+			  <option value='cpp'>C++</option>
+			</select>
+			<div className='absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none'>
 			</div>
+		  </div>
+		</div>
 
 			<div className='flex items-center m-2'>
 				<button

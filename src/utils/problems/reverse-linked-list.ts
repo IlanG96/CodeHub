@@ -102,7 +102,69 @@ export const reverseLinkedList: Problem = {
 	],
 	constraints: `<li class='mt-2'>The number of nodes in the list is the range <code>[0, 5000]</code>.</li>
 <li class='mt-2'><code>-5000 <= Node.val <= 5000</code></li>`,
-	starterCode: starterCodeReverseLinkedListJS,
+	starterCode: {
+		javascript: `
+	/**
+	 * Definition for singly-linked list.
+	 * function ListNode(val, next) {
+	 *     this.val = (val===undefined ? 0 : val)
+	 *     this.next = (next===undefined ? null : next)
+	 * }
+	 */
+	// Do not edit function name
+	function reverseLinkedList(head) {
+		// Write your JavaScript code here
+		return null;
+	};
+	`,
+		python: `
+	class ListNode:
+		def __init__(self, val=0, next=None):
+			self.val = val
+			self.next = next
+	
+	# Do not edit function name
+	def reverseLinkedList(head):
+		# Write your Python code here
+		return None
+	`,
+		cpp: `
+	/**
+	 * Definition for singly-linked list.
+	 * struct ListNode {
+	 *     int val;
+	 *     ListNode *next;
+	 *     ListNode(int x) : val(x), next(NULL) {}
+	 * };
+	 */
+	
+	// Do not edit function name
+	ListNode* reverseLinkedList(ListNode* head) {
+		// Write your C++ code here
+		return nullptr;
+	}
+	`,
+		java: `
+	/**
+	 * Definition for singly-linked list.
+	 * public class ListNode {
+	 *     int val;
+	 *     ListNode next;
+	 *     ListNode() {}
+	 *     ListNode(int val) { this.val = val; }
+	 *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+	 * }
+	 */
+	
+	// Do not edit function name
+	public class ReverseLinkedList {
+		public ListNode reverseLinkedList(ListNode head) {
+			// Write your Java code here
+			return null;
+		}
+	}
+	`
+	},  
 	handlerFunction: reverseLinkedListHandler,
 	starterFunctionName: "function reverseLinkedList(",
 	order: 2,

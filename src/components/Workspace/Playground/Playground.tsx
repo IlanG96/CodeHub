@@ -13,6 +13,7 @@ import { problems } from "@/utils/problems";
 import { useRouter } from "next/router";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { mapLanguages } from "./LanguagesMap";
 
 type PlaygroundProps = {
 	problem: Problem;
@@ -28,20 +29,41 @@ export interface ISettings {
 
 const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved }) => {
 	const [activeTestCaseId, setActiveTestCaseId] = useState<number>(0);
-	let [userCode, setUserCode] = useState<string>(problem.starterCode);
-
+	const [selectedLanguage, setSelectedLanguage] = useState("javascript");
+	let [userCode, setUserCode] = useState<string>(problem.starterCode[selectedLanguage as keyof typeof problem.starterCode]);
+	const [codeMirrorExtensions, setCodeMirrorExtensions] = useState<any[]>([javascript()]);
 	const [fontSize, setFontSize] = useLocalStorage("lcc-fontSize", "16px");
-
 	const [settings, setSettings] = useState<ISettings>({
 		fontSize: fontSize,
 		settingsModalIsOpen: false,
 		dropdownIsOpen: false,
 	});
 
+
 	const [user] = useAuthState(auth);
 	const {
 		query: { pid },
 	} = useRouter();
+
+	const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		const selected = e.target.value;
+		setSelectedLanguage(selected);
+		// Use the mapLanguages function to get the language definition
+		const languageDefinition = mapLanguages(selected);
+		// Check if a language definition is available
+		if (languageDefinition) {
+		  // Execute the language definition function to get the language support
+		  const languageSupport = languageDefinition();
+
+		  // Set the appropriate CodeMirror extension and user code
+		  if (languageSupport) {
+			const newStarterCode = problem.starterCode[selected as keyof typeof problem.starterCode];
+			setUserCode(newStarterCode); // Set the user code
+			setCodeMirrorExtensions([languageSupport]); // Set the CodeMirror extension
+		  }
+		}
+	  }
+
 
 	const handleSubmit = async () => {
 		if (!user) {
@@ -96,14 +118,15 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 			}
 		}
 	};
-
 	useEffect(() => {
 		const code = localStorage.getItem(`code-${pid}`);
 		if (user) {
-			setUserCode(code ? JSON.parse(code) : problem.starterCode);
+			setUserCode(code ? JSON.parse(code) : problem.starterCode[selectedLanguage as keyof typeof problem.starterCode]);
+			
 		} else {
-			setUserCode(problem.starterCode);
+			setUserCode(problem.starterCode[selectedLanguage as keyof typeof problem.starterCode]);
 		}
+		
 	}, [pid, user, problem.starterCode]);
 
 	const onChange = (value: string) => {
@@ -113,7 +136,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 
 	return (
 		<div className='flex flex-col bg-dark-layer-1 relative overflow-x-hidden'>
-			<PreferenceNav settings={settings} setSettings={setSettings} />
+			<PreferenceNav selectedLanguage={selectedLanguage} handleLanguageChange={handleLanguageChange} settings={settings} setSettings={setSettings} />
 
 			<Split className='h-[calc(100vh-94px)]' direction='vertical' sizes={[60, 40]} minSize={60}>
 				<div className='w-full overflow-auto'>
@@ -121,7 +144,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 						value={userCode}
 						theme={vscodeDark}
 						onChange={onChange}
-						extensions={[javascript()]}
+						extensions={[codeMirrorExtensions]}
 						style={{ fontSize: settings.fontSize }}
 					/>
 				</div>

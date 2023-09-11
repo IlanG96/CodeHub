@@ -34,20 +34,41 @@ export const search2DMatrixHandler = (fn: any) => {
 		throw new Error(error);
 	}
 };
+
 const starterCodeSearch2DMatrixJS = `// Do not edit function name
 function searchMatrix(matrix, target) {
-  // Write your code here
+  // Write your JavaScript code here
 };`;
+
+const starterCodeSearch2DMatrixPython = `# Do not edit function name
+def searchMatrix(matrix, target):
+    # Write your Python code here
+    pass`;
+
+const starterCodeSearch2DMatrixCPP = `// Do not edit function name
+bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    // Write your C++ code here
+    return false;
+}`;
+
+const starterCodeSearch2DMatrixJava = `// Do not edit function name
+public class Search2DMatrix {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        // Write your Java code here
+        return false;
+    }
+}`;
 
 export const search2DMatrix: Problem = {
 	id: "search-a-2d-matrix",
 	title: "5. Search a 2D Matrix",
+	order: 5,
 	problemStatement: `
-  <p class='mt-3'>Write an efficient algorithm that searches for a value in an <code>m x n</code> matrix. This matrix has the following properties:</p>
-    <li class="mt-3">Integers in each row are sorted from left to right.</li>
-    <li class="mt-3">The first integer of each row is greater than the last integer of the previous row.</li>
-  <p class='mt-3'>Given <code>matrix</code>, an <code>m x n</code> matrix, and <code>target</code>, return <code>true</code> if <code>target</code> is in the matrix, and <code>false</code> otherwise.</p>
-  `,
+		<p class='mt-3'>Write an efficient algorithm that searches for a value in an <code>m x n</code> matrix. This matrix has the following properties:</p>
+			<li class="mt-3">Integers in each row are sorted from left to right.</li>
+			<li class="mt-3">The first integer of each row is greater than the last integer of the previous row.</li>
+		<p class='mt-3'>Given <code>matrix</code>, an <code>m x n</code> matrix, and <code>target</code>, return <code>true</code> if <code>target</code> is in the matrix, and <code>false</code> otherwise.</p>
+	`,
 	examples: [
 		{
 			id: 0,
@@ -76,13 +97,17 @@ export const search2DMatrix: Problem = {
 		},
 	],
 	constraints: `
-  <li class='mt-2'><code>m == matrix.length</code></li>
-  <li class='mt-2'><code>n == matrix[i].length</code></li>
-  <li class='mt-2'><code>1 <= m, n <= 100</code></li>
-  <li class='mt-2'><code>-10<sup>4</sup> <= matrix[i][j], target <= 10<sup>4</sup></code></li>
-  `,
-	starterCode: starterCodeSearch2DMatrixJS,
+		<li class='mt-2'><code>m == matrix.length</code></li>
+		<li class='mt-2'><code>n == matrix[i].length</code></li>
+		<li class='mt-2'><code>1 <= m, n <= 100</code></li>
+		<li class='mt-2'><code>-10<sup>4</sup> <= matrix[i][j], target <= 10<sup>4</sup></code></li>
+	`,
+	starterCode: {
+		javascript: starterCodeSearch2DMatrixJS,
+		python: starterCodeSearch2DMatrixPython,
+		cpp: starterCodeSearch2DMatrixCPP,
+		java: starterCodeSearch2DMatrixJava,
+	},
 	handlerFunction: search2DMatrixHandler,
 	starterFunctionName: "function searchMatrix",
-	order: 5,
 };

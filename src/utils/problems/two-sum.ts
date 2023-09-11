@@ -1,9 +1,26 @@
 import assert from "assert";
 import { Problem } from "../types/problem";
 
-const starterCodeTwoSum = `function twoSum(nums,target){
-  // Write your code here
+const starterCodeTwoSumJS = `function twoSum(nums,target){
+  // Write your JavaScript code here
 };`;
+
+const starterCodeTwoSumPython = `# Do not edit function name
+def twoSum(nums, target):
+    # Write your Python code here
+    pass`;
+
+const starterCodeTwoSumCPP = `// Do not edit function name
+vector<int> twoSum(vector<int>& nums, int target) {
+    // Write your C++ code here
+    return {};
+}`;
+
+const starterCodeTwoSumJava = `// Do not edit function name
+public int[] twoSum(int[] nums, int target) {
+    // Write your Java code here
+    return new int[] {};
+}`;
 
 // checks if the user has the correct code
 const handlerTwoSum = (fn: any) => {
@@ -38,15 +55,17 @@ const handlerTwoSum = (fn: any) => {
 export const twoSum: Problem = {
 	id: "two-sum",
 	title: "1. Two Sum",
-	problemStatement: `<p class='mt-3'>
-  Given an array of integers <code>nums</code> and an integer <code>target</code>, return
-  <em>indices of the two numbers such that they add up to</em> <code>target</code>.
-</p>
-<p class='mt-3'>
-  You may assume that each input would have <strong>exactly one solution</strong>, and you
-  may not use thesame element twice.
-</p>
-<p class='mt-3'>You can return the answer in any order.</p>`,
+	order: 1,
+	problemStatement: `
+		<p class='mt-3'>
+			Given an array of integers <code>nums</code> and an integer <code>target</code>, return
+			<em>indices of the two numbers such that they add up to</em> <code>target</code>.
+		</p>
+		<p class='mt-3'>
+			You may assume that each input would have <strong>exactly one solution</strong>, and you
+			may not use the same element twice.
+		</p>
+		<p class='mt-3'>You can return the answer in any order.</p>`,
 	examples: [
 		{
 			id: 1,
@@ -66,18 +85,25 @@ export const twoSum: Problem = {
 			outputText: "[0,1]",
 		},
 	],
-	constraints: `<li class='mt-2'>
-  <code>2 ≤ nums.length ≤ 10</code>
-</li> <li class='mt-2'>
-<code>-10 ≤ nums[i] ≤ 10</code>
-</li> <li class='mt-2'>
-<code>-10 ≤ target ≤ 10</code>
-</li>
-<li class='mt-2 text-sm'>
-<strong>Only one valid answer exists.</strong>
-</li>`,
+	constraints: `
+		<li class='mt-2'>
+			<code>2 ≤ nums.length ≤ 10</code>
+		</li>
+		<li class='mt-2'>
+			<code>-10 ≤ nums[i] ≤ 10</code>
+		</li>
+		<li class='mt-2'>
+			<code>-10 ≤ target ≤ 10</code>
+		</li>
+		<li class='mt-2 text-sm'>
+			<strong>Only one valid answer exists.</strong>
+		</li>`,
 	handlerFunction: handlerTwoSum,
-	starterCode: starterCodeTwoSum,
-	order: 1,
+	starterCode: {
+		javascript: starterCodeTwoSumJS,
+		python: starterCodeTwoSumPython,
+		cpp: starterCodeTwoSumCPP,
+		java: starterCodeTwoSumJava,
+	},
 	starterFunctionName: "function twoSum(",
 };

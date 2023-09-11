@@ -14,7 +14,13 @@ export type Problem = {
 	examples: Example[];
 	constraints: string;
 	order: number;
-	starterCode: string;
+	starterCode: {
+		javascript: string;
+		python: string;
+		cpp: string;
+		java: string;
+		// Add more languages as needed
+	  };
 	handlerFunction: ((fn: any) => boolean) | string;
 	starterFunctionName: string;
 };
